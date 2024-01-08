@@ -1,7 +1,9 @@
 const Filter = () => {
     return (
         <div className="app-block filter">
-            <h2>Filter</h2>
+            <div className="filter-group">
+                <input type='text' placeholder="enter the filter field" />
+            </div>
         </div>
     )
 }
