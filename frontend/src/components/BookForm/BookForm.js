@@ -1,4 +1,5 @@
 import { useState } from "react"
+import axios from 'axios'
 import "./BookForm.css"
 import { useDispatch } from "react-redux"
 import { addBook } from "../../redux/slices/bookSlices"
@@ -13,21 +14,27 @@ const BookForm = () => {
 
     const dispatch = useDispatch()
 
-    const bookHundler = (event) => {
-        event.preventDefault()
+    const bookHandle = () => {
+
 
         if (title && author) {
             dispatch(addBook({title, author}))
         }
 
-
-        // if (title && author) {
-        //     dispatch(addBook(createBook({title, author})))
-        //     setTitle('')
-        //     setAuthor('')
-        // }
     }
    
+
+    const bookHundleViaAPi = async () => {
+
+        try {
+             const {title, author} = await (await axios.get("http://localhost:4000/random-book")).data
+
+            dispatch(addBook({title, author}))
+        } catch (error) {
+            console.log("Something went wrong", error)
+        }
+       
+    }
 
     function addRandomBook() {
         const random = Math.floor(Math.random() * data.length)
@@ -42,7 +49,7 @@ const BookForm = () => {
  
         <div className="app-block book-form">
             <h2>Book Form</h2>
-            <form onSubmit={bookHundler}>
+            <form onSubmit={bookHandle}>
                 <div>
                     <label htmlFor="title" >Title: </label>
                      <input id="title" value={title} type="text" onChange={(el) => setTitle(el.target.value)} />
@@ -59,7 +66,9 @@ const BookForm = () => {
                 <br />
                 
             </form>
-                <button onClick={addRandomBook}>Add random book</button>
+            <button type="button" onClick={addRandomBook}>Add random book</button>
+            
+            <button type="button" onClick={bookHundleViaAPi}>Add book VIA API</button>
         </div>
     )
 }
