@@ -55,7 +55,12 @@ const BookList = () => {
                         return <li key={i}>
                             <div className="book-info">
                                 {highlightMath(el.title, filterData)}
-                                <strong> {highlightMath(el.author, authorFilterData)}</strong>
+
+                                <em> by </em>
+
+                                <strong> {highlightMath(el.author, authorFilterData)} </strong>
+
+                                ({el.method})
                             </div>
                             <button className="book-actions" onClick={() => dispatch(bookmarkAction(el.bookId))}>{el.isFavorite ? <BsBookmarkPlusFill/> :<BsBookmarkPlus />}</button>
                             <button className="book-actions" onClick={() => dispatch(deleteBook(el.bookId))}>Delete me!</button>

@@ -1,10 +1,8 @@
 import { useState } from "react"
-import axios from 'axios'
-import "./BookForm.css"
 import { useDispatch } from "react-redux"
-import { addBook } from "../../redux/slices/bookSlices"
+import { addBook, thunkFunction } from "../../redux/slices/bookSlices"
 import data from "../../data/data.json"
-
+import "./BookForm.css"
 import createBook from "../../utils/createBook";
 
 const BookForm = () => {
@@ -14,25 +12,23 @@ const BookForm = () => {
 
     const dispatch = useDispatch()
 
-    const bookHandle = () => {
-
+    const bookHandle = (event) => {
+        event.preventDefault()
 
         if (title && author) {
-            dispatch(addBook({title, author}))
+            dispatch(addBook(createBook({title, author,  method: 'manualy'})))
         }
+        setTitle('')
+        setAuthor('')
 
     }
    
 
-    const bookHundleViaAPi = async () => {
+  
 
-        try {
-             const {title, author} = await (await axios.get("http://localhost:4000/random-book")).data
-
-            dispatch(addBook({title, author}))
-        } catch (error) {
-            console.log("Something went wrong", error)
-        }
+    const bookHundleViaAPi =  () => {
+        dispatch(thunkFunction)
+      
        
     }
 
@@ -41,7 +37,7 @@ const BookForm = () => {
 
         const bookObj = data[random]
 
-        dispatch(addBook(createBook({title: bookObj.title, author: bookObj.author})))
+        dispatch(addBook(createBook({title: bookObj.title, author: bookObj.author, method: 'random'})))
     }
 
     return (
@@ -52,18 +48,18 @@ const BookForm = () => {
             <form onSubmit={bookHandle}>
                 <div>
                     <label htmlFor="title" >Title: </label>
-                     <input id="title" value={title} type="text" onChange={(el) => setTitle(el.target.value)} />
+                     <input name="title" value={title} type="text" onChange={(el) => setTitle(el.target.value)} />
                 </div>
                 <div>
                     <label htmlFor="author">Author: </label>
-                     <input id="author" value={author} type='text' onChange={(el) => setAuthor(el.target.value)} />
+                     <input name="author" value={author} type='text' onChange={(el) => setAuthor(el.target.value)} />
                 </div>
 
                 
                
                 
                 <button type="submit">Add book</button>
-                <br />
+        
                 
             </form>
             <button type="button" onClick={addRandomBook}>Add random book</button>
