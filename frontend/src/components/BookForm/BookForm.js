@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "./BookForm.css"
 import { useDispatch } from "react-redux"
-import { addBook } from "../../redux/books/actionCreators"
+import { addBook } from "../../redux/slices/bookSlices"
 import data from "../../data/data.json"
 
 import createBook from "../../utils/createBook";
@@ -16,12 +16,16 @@ const BookForm = () => {
     const bookHundler = (event) => {
         event.preventDefault()
 
-        
         if (title && author) {
-            dispatch(addBook(createBook({title, author})))
-            setTitle('')
-            setAuthor('')
+            dispatch(addBook({title, author}))
         }
+
+
+        // if (title && author) {
+        //     dispatch(addBook(createBook({title, author})))
+        //     setTitle('')
+        //     setAuthor('')
+        // }
     }
    
 
@@ -40,7 +44,7 @@ const BookForm = () => {
             <h2>Book Form</h2>
             <form onSubmit={bookHundler}>
                 <div>
-                    <label htmlFor="title">Title: </label>
+                    <label htmlFor="title" >Title: </label>
                      <input id="title" value={title} type="text" onChange={(el) => setTitle(el.target.value)} />
                 </div>
                 <div>
