@@ -21,15 +21,15 @@ const BookList = () => {
 
 
     if (filterData.length > 0) {
-        state = state.filter((el) => el.title.toLowerCase().includes(filterData.toLowerCase()))
+        state = state.books.filter((el) => el.title.toLowerCase().includes(filterData.toLowerCase()))
     }
 
     if (authorFilterData.length > 0) {
-        state = state.filter((el) => el.author.toLowerCase().includes(authorFilterData.toLowerCase()))
+        state = state.books.filter((el) => el.author.toLowerCase().includes(authorFilterData.toLowerCase()))
     }
 
     if (favoriteFilterData) {
-        state = state.filter((el) => el.isFavorite === favoriteFilterData)
+        state = state.books.filter((el) => el.isFavorite === favoriteFilterData)
     }
 
 
@@ -51,7 +51,7 @@ const BookList = () => {
             <h2>Book List</h2>
             {state.length === 0 ? <p>Not books yet</p> : (
                 <ul>
-                    {state.map((el, i) => {
+                    {state.books.map((el, i) => {
                         return <li key={i}>
                             <div className="book-info">
                                 {highlightMath(el.title, filterData)}
